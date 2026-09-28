@@ -1,9 +1,9 @@
 """The menu should have four separate options:
 
-(G)et a valid score (must be 0-100 inclusive)
-(P)rint result (copy or import your function to determine the result from score.py)
-(S)how stars (this should print as many stars as the score)
-(Q)uit"""
+Get a valid score (must be 0-100 inclusive)
+Print result (copy or import your function to determine the result from score.py)
+Show stars (this should print as many stars as the score)
+Quit"""
 
 import math
 
@@ -18,12 +18,13 @@ Main Menu
 Enter choice: """
 
 LINE = "*" * 30
-result = "No result received."
-score = 0
 
 
 def main():
     """Gets user score and describes result. """
+    score = 0
+    result = "result not received."
+
     while True:
         choice = input(MENU).strip()
 
@@ -42,29 +43,36 @@ def main():
                     print("Invalid Input")
                     continue
 
-                result = categorize_result(score)
-                print(f"Score received.")
+                result, is_score_valid = categorize_result(score)
+
+                if not is_score_valid:
+                    print("Invalid Score. Score is 0 - 100.")
+                else:
+                    print(f"Score received.")
+
+                break
 
         elif choice == "2":
-            print(result)
+            print(f"Score {score:.1f} is {result}.")
 
         elif choice == "3":
-            star_score = "*" * len(math.floor(score))
+            star_score = "*" * math.floor(score)
             print(f"Star score: {star_score}")
-            break
 
         elif choice == "0":
             print("Goodbye!")
             break
 
         else:
-            print("Invalid choice. Please enter G, 1, 2 or 3.")
+            print("Invalid choice. Please enter 0, 1, 2 or 3.")
 
 
-def categorize_result(score: float) -> str:
+def categorize_result(score: float) -> tuple[str, bool]:
     """Take score, categorize result and return result"""
+    is_score_valid = True
     if score < 0 or score > 100:
         result = "Invalid score"
+        is_score_valid = False
     elif score >= 90:
         result = "Excellent"
     elif score >= 50:
@@ -73,7 +81,8 @@ def categorize_result(score: float) -> str:
         result = "Bad"
     else:
         result = "Invalid Input"
-    return result
+        is_score_valid = False
+    return result, is_score_valid
 
 
 # Program entry point
