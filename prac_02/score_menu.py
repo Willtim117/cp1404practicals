@@ -17,8 +17,6 @@ Main Menu
 0. Quit
 Enter choice: """
 
-LINE = "*" * 30
-
 
 def main():
     """Gets user score and describes result. """
