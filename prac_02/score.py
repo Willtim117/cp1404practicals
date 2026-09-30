@@ -4,6 +4,7 @@ Program to determine score status
 """
 import random
 
+
 def main():
     """Gets user score and describes result. """
     while True:
