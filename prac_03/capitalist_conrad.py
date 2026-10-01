@@ -37,7 +37,7 @@ while MIN_PRICE <= price <= MAX_PRICE:
 
     price *= (1 + price_change)
     number_of_days = number_of_days + 1
-    print(f"On day {number_of_days:<3} price is: ${price:<6,.2f} | Multiplier: {1+price_change:.2f}", file=out_file)
+    print(f"On day {number_of_days:<3} price is: ${price:<6,.2f} | Growth Factor: {1+price_change:.2f}", file=out_file)
 
 out_file.close()
 
