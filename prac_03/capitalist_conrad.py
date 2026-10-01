@@ -16,8 +16,11 @@ MAX_PRICE = 100.0
 INITIAL_PRICE = 10.0
 number_of_days = 0
 
+FILENAME = "Stock Report.txt"
+out_file = open(FILENAME, 'w')
+
 price = INITIAL_PRICE
-print(f"Starting price: ${price:,.2f}")
+print(f"Starting price: ${price:,.2f}", file=out_file)
 
 while MIN_PRICE <= price <= MAX_PRICE:
     price_change = 0
@@ -34,7 +37,8 @@ while MIN_PRICE <= price <= MAX_PRICE:
 
     price *= (1 + price_change)
     number_of_days = number_of_days + 1
-    print(f"On day {number_of_days:<3} price is: ${price:<6,.2f} | Price change: {1+price_change:.2f}")
+    print(f"On day {number_of_days:<3} price is: ${price:<6,.2f} | Multiplier: {1+price_change:.2f}", file=out_file)
 
+out_file.close()
 
 
