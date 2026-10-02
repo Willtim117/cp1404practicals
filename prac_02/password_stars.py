@@ -1,3 +1,28 @@
+def main():
+    print("=== Create a New Password ===")
+    print("Requirements:")
+    print(" - Minimum 10 characters")
+    print(" - At least 1 uppercase letter")
+    print(" - At least 1 lowercase letter")
+    print(" - At least 1 digit")
+    print(" - At least 1 special character\n")
+
+    while True:
+        password = input("Enter your new password: ")
+        is_valid, errors = validate_password(password)
+
+        if is_valid:
+            print("\nPassword successfully created!")
+            masked_password = "*" * len(password)
+            print(f"Stored Password: {masked_password}")
+            break
+        else:
+            print("\nPassword does not meet requirements:")
+            for error in errors:
+                print(f"    Missing: {error}")
+            print("\nPlease try again.\n")
+
+
 def validate_password(password: str) -> tuple[bool, list[str]]:
     """Validates a password using standard loops and string methods."""
     # Track which character types we find in the password
@@ -38,31 +63,6 @@ def validate_password(password: str) -> tuple[bool, list[str]]:
 
     is_valid = len(errors) == 0
     return is_valid, errors
-
-
-def main():
-    print("=== Create a New Password ===")
-    print("Requirements:")
-    print(" - Minimum 10 characters")
-    print(" - At least 1 uppercase letter")
-    print(" - At least 1 lowercase letter")
-    print(" - At least 1 digit")
-    print(" - At least 1 special character\n")
-
-    while True:
-        password = input("Enter your new password: ")
-        is_valid, errors = validate_password(password)
-
-        if is_valid:
-            print("\nPassword successfully created!")
-            masked_password = "*" * len(password)
-            print(f"Stored Password: {masked_password}")
-            break
-        else:
-            print("\nPassword does not meet requirements:")
-            for error in errors:
-                print(f"  - Missing: {error}")
-            print("\nPlease try again.\n")
 
 
 if __name__ == "__main__":
