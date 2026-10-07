@@ -29,7 +29,7 @@ def load_data(filename=FILENAME) -> tuple[list[list], int, int]:
         parts = line.split(',')  # Separate the data into its parts
 
         # Make the number an integer as part of a new, poorly named, list
-        data = [parts[0], parts[1], int(parts[2])]
+        subject = [parts[0], parts[1], int(parts[2])]
 
         # Get longest character width of lecturer name
         if max_name_length < len(parts[1]):
@@ -38,7 +38,7 @@ def load_data(filename=FILENAME) -> tuple[list[list], int, int]:
         if max_num_students_length < len(parts[2]):
             max_num_students_length = len(parts[2])
 
-        data_list.append(data)
+        data_list.append(subject)
         # print(data_list)
     input_file.close()
     return data_list, max_name_length, max_num_students_length
