@@ -18,7 +18,7 @@ def main():
             if random_int not in quick_pick:
                 quick_pick.append(random_int)
 
-        print(" ".join(f"{str(number):2}" for number in sorted(quick_pick)))
+        print(" ".join(f"{str(number):>2}" for number in sorted(quick_pick)))
 
 
 main()
