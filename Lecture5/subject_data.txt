@@ -1,0 +1,4 @@
+CP1401,Ada Lovelace,192,Wednesday
+CP1404,Alan Turing,98,Thursday
+CP4321,Bill Gates,676,Friday
+CP1234,Steve Jobs,123,Friday
