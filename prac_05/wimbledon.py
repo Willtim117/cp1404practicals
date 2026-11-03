@@ -10,12 +10,11 @@ filename = "wimbledon.csv"
 
 with open(filename, "r", encoding="utf-8-sig") as in_file:
     next(in_file)
-
+    # Build List to work with
     wimbledon_data = []
     for line in in_file:
         line = line.strip()
         line_parts = line.split(',')
-        print(line_parts)
         wimbledon_data.append(line_parts)
 
 champion_to_wins = {}
@@ -29,5 +28,22 @@ for match_data in wimbledon_data:
     else:
         country_to_champions[match_data[1]].add(match_data[2])
 
-print(champion_to_wins)
-print(country_to_champions)
+# Champion to wins in Alphabetical order
+sorted_champion_to_wins = {}
+for champion in sorted(champion_to_wins.keys()):
+    sorted_champion_to_wins[champion] = champion_to_wins[champion]
+
+print(sorted_champion_to_wins)
+
+# Country to wins in Alphabetical order
+sorted_country_to_champions = {}
+
+for country in sorted(country_to_champions.keys()):
+
+    champions = country_to_champions[country]
+    sorted_champions = sorted(champions)
+
+    sorted_country_to_champions[country] = sorted_champions
+
+print(sorted_country_to_champions)
+
