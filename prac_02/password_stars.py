@@ -65,5 +65,4 @@ def validate_password(password: str) -> tuple[bool, list[str]]:
     return is_valid, errors
 
 
-if __name__ == "__main__":
-    main()
+main()

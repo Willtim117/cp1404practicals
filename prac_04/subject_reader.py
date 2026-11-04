@@ -3,7 +3,7 @@ CP1404/CP5632 Practical
 Data file -> lists program
 """
 
-FILENAME = "subject_data.txt"
+FILENAME = "../Lecture5/subject_data.txt"
 
 
 def main():
@@ -11,7 +11,7 @@ def main():
     data_list, max_name_width, max_students_width = load_subject_data(FILENAME)
     for line in data_list:
         print(f"{line[0]} is taught by {line[1]:{max_name_width}} "
-              f"and has {line[2]:>{max_students_width}} students")
+              f"and has {line[2]:>{max_students_width}} students on {line[3]}")
 
 
 def load_subject_data(filename=FILENAME) -> tuple[list[list], int, int]:
