@@ -19,7 +19,7 @@ with open(filename, "r", encoding="utf-8-sig") as in_file:
 
 champion_to_wins = {}
 country_to_champions = {}
-
+# Build Dictionaries
 for match_data in wimbledon_data:
     champion_to_wins[match_data[2]] = champion_to_wins.get(match_data[2], 0) + 1
 
@@ -28,16 +28,22 @@ for match_data in wimbledon_data:
     else:
         country_to_champions[match_data[1]].add(match_data[2])
 
-# Champion to wins in Alphabetical order
+# Champion to Wins in Alphabetical order
 sorted_champion_to_wins = {}
 for champion in sorted(champion_to_wins.keys()):
     sorted_champion_to_wins[champion] = champion_to_wins[champion]
 
-print(sorted_champion_to_wins)
+# Find Max Widths: Champion to Wins
+max_champion_width = max(len(champion) for champion in list(champion_to_wins.keys()))
+max_wins_width = max(len(str(wins)) for wins in list(champion_to_wins.values()))
+
+# Print Wimbledon Champions
+print("Wimbledon Champions:")
+for champion in sorted_champion_to_wins:
+    print(f"{champion:<{max_champion_width}} : {sorted_champion_to_wins[champion]:>{max_wins_width}}")
 
 # Country to wins in Alphabetical order
 sorted_country_to_champions = {}
-
 for country in sorted(country_to_champions.keys()):
 
     champions = country_to_champions[country]
@@ -45,5 +51,6 @@ for country in sorted(country_to_champions.keys()):
 
     sorted_country_to_champions[country] = sorted_champions
 
-print(sorted_country_to_champions)
-
+print(f"These {len(sorted_country_to_champions.keys())} countries have won Wimbledon:")
+countries_string = ", ".join(sorted_country_to_champions.keys())
+print(countries_string)
