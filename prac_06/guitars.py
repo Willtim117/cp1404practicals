@@ -20,9 +20,14 @@ Actual: 45 mins
 # s1 = Student(first_name, last_name, student_id)
 # print(s1.first_name, "has ID", s1.id)
 
+from guitar import Guitar
 
-my_guitars = [["Fender Stratocaster", 2014, 765.4], ["Gibson L-5 CES", 1922, 16035.40],
-              ["Line 6 JTV-59", 2010, 1512.90]]
+my_guitars = []
+
+my_guitars.append(Guitar("Fender Stratocaster", 2014, 765.4))
+my_guitars.append(Guitar("Gibson L-5 CES", 1922, 16035.40))
+my_guitars.append(Guitar("Line 6 JTV-59", 2010, 1512.9))
+
 
 print("My Guitars!")
 name = str(input("Name: "))
@@ -30,17 +35,19 @@ while name != "":
     year = int(input("Year: "))
     cost = float(input("Cost: "))
 
-    my_guitar = [name, year, cost]
-    my_guitars.append(my_guitar)
+    my_guitars.append(Guitar(name, year, cost))
+
     print(f"{name} ({year} : ${cost:,.2f}) added.")
 
     name = str(input("Name: "))
 
 print("These are my Guitars:")
-name_width = max(len(f"{guitar[0]}") for guitar in my_guitars)
-price_width = max(len(f"{guitar[2]:,.2f}") for guitar in my_guitars)
+name_width = max(len(f"{guitar.name}") for guitar in my_guitars)
+price_width = max(len(f"{guitar.cost:,.2f}") for guitar in my_guitars)
 
 for i, guitar in enumerate(my_guitars):
-    print(f"Guitar {i+1}: {guitar[0]:>{name_width}} ({guitar[1]}), worth $ {guitar[2]:>{price_width},.2f}")
+    print(f"Guitar {i+1}: {guitar.name:>{name_width}} ({guitar.year}), worth $ {guitar.cost:>{price_width},.2f}")
     # TODO "Vintage"
+    # print(f"Guitar {i}: {guitar.name:>20} ({guitar.year}), worth ${guitar.cost:10,.2f}{vintage_string}")
+    # category = "adult" if age >= 18 else "child"
 
