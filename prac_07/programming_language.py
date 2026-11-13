@@ -12,8 +12,8 @@ class ProgrammingLanguage:
         self.name = name
         self.typing = typing
         self.reflection = reflection
-        self.pointer_arithmetic = pointer_arithmetic
         self.year = year
+        self.pointer_arithmetic = pointer_arithmetic
 
     def __str__(self):
         """Provide string representation of a ProgrammingLanguage."""
