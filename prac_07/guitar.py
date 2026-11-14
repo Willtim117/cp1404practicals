@@ -29,3 +29,9 @@ class Guitar:
 
     def is_vintage(self):
         return self.get_age() >= 50
+
+    def __lt__(self, other):
+        """Determine if two People are the same."""
+        if not isinstance(other, Guitar):
+            return NotImplemented
+        return self.year < other.year
