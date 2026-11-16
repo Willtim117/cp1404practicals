@@ -9,7 +9,7 @@ import datetime
 class Project:
     """Represent a Project."""
 
-    def __init__(self, name="", start_date="", priority="", cost_estimate="", completion_percentage=""):
+    def __init__(self, name="", start_date=None, priority="", cost_estimate="", completion_percentage=""):
         """Initialize a Project instance.
         """
         self.name = name
@@ -20,7 +20,8 @@ class Project:
 
     def __str__(self) -> str:
         """Return string representation of a Guitar"""
-        return f"{self.name}, {self.start_date}, {self.priority}, {self.cost_estimate}, {self.completion_percentage}"
+        return (f"{self.name}, {self.start_date.strftime("%d/%m/%Y")},"
+                f" {self.priority}, {self.cost_estimate}, {self.completion_percentage}")
 
     def __repr__(self) -> str:
         return str(self)

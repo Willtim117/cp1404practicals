@@ -36,6 +36,7 @@ def main():
     """
     print(menu)
 
+    projects = []
     choice = input(">>> ").strip().upper()
     while choice != "Q":
         if choice == "L":
@@ -85,7 +86,7 @@ def load_file(filename) -> list[Project]:
     for line in in_file:
         # e.g. Martin Grand J12-16GTE,2015,2199
         parts = line.strip().split('\t')
-        project = Project(parts[0], datetime.strptime(parts[1], "%d/%m/%Y").date(), int(parts[2]),
+        project = Project(parts[0], parse_date(parts[1]), int(parts[2]),
                           float(parts[3]), float(parts[4]))
         print(parts)
 
@@ -116,7 +117,7 @@ def add_project(projects: list[Project]):
     name = str(input("Name: "))
     while name != "":
         date_string = input("Start date (dd/mm/yy): ")
-        start_date = datetime.strptime(date_string, "%d/%m/%Y").date()
+        start_date = parse_date(date_string)
 
         priority = int(input("Priority: "))
         cost_estimate = float(input("Cost estimate: "))
@@ -148,15 +149,25 @@ def display_projects(projects: list[Project]):
 
     print("Incomplete projects:")
     for project in incomplete_projects:
-        print(f"\t{project.name:<{name_width}}: start: {project.start_date}, "
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
               f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
               f"Completion: {project.completion_percentage:>{4}}%")
 
     print("Completed projects:")
     for project in complete_projects:
-        print(f"\t{project.name:<{name_width}}: start: {project.start_date}, "
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
               f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
               f"Completion: {project.completion_percentage:>{4}}%")
+
+
+def parse_date(date_string: str):
+    """Parse a date in either dd/mm/yyyy or dd/mm/yy format."""
+    for fmt in ("%d/%m/%Y", "%d/%m/%y"):
+        try:
+            return datetime.strptime(date_string, fmt).date()
+        except ValueError:
+            continue
+    raise ValueError(f"Invalid date: {date_string}")
 
 
 main()
