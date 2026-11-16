@@ -23,17 +23,51 @@ test_file = "test_file.txt"
 def main():
     """Read file of programming language details, save as objects, display."""
 
-    # projects = load_file(FILENAME)
-    projects = load_file(test_file)
+    menu = """
+    Main Menu
+    ---------
+    - (L)oad projects  
+    - (S)ave projects  
+    - (D)isplay projects  
+    - (F)ilter projects by date
+    - (A)dd new project  
+    - (U)pdate project
+    - (Q)uit
+    """
+    print(menu)
 
-    display_projects(projects)
+    choice = input(">>> ").strip().upper()
+    while choice != "Q":
+        if choice == "L":
+            # projects = load_file(FILENAME)
+            projects = load_file(test_file)
+            print("INCOMPLETE CODE")
 
-    # add_project(projects)
+        elif choice == "S":
+            print("INCOMPLETE CODE")
 
-    for project in projects:
-        print(project)
+        elif choice == "D":
+            display_projects(projects)
+            print("INCOMPLETE CODE")
 
-    # update_file(projects, test_file)
+        elif choice == "F":
+            print("INCOMPLETE CODE")
+
+        elif choice == "A":
+            add_project(projects)
+            print("INCOMPLETE CODE")
+
+        elif choice == "U":
+            update_file(projects, test_file)
+            print("INCOMPLETE CODE")
+
+        else:
+            print("INVALID INPUT")
+
+        print(menu)
+        choice = input(">>> ").strip().upper()
+
+        "<do final thing, if needed>"
 
 
 def load_file(filename) -> list[Project]:
@@ -99,9 +133,7 @@ def add_project(projects: list[Project]):
 def display_projects(projects: list[Project]):
     """Takes list of Guitar objects print formatted list."""
 
-    index_width = len(str(len(projects)))
     name_width = max(len(f"{project.name}") for project in projects)
-    # year_width = max(len(f"{project.year}") for project in projects)
     cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
 
     incomplete_projects = []
