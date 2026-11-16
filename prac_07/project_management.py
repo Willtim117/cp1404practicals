@@ -16,7 +16,7 @@ Record Music Video	01/12/2022	9	250000.0	0
 Read 7 Habits Book	13/12/2021	6	99.0	100
 """
 
-FILENAME = "projects.txt"
+# FILENAME = "projects.txt"
 test_file = "test_file.txt"
 
 
@@ -41,10 +41,12 @@ def main():
     while choice != "Q":
         if choice == "L":
             # projects = load_file(FILENAME)
-            projects = load_file(test_file)
+            FILENAME = get_filename()
+            projects = load_file(FILENAME)
             print("INCOMPLETE CODE")
 
         elif choice == "S":
+            save_file(projects)
             print("INCOMPLETE CODE")
 
         elif choice == "D":
@@ -59,7 +61,6 @@ def main():
             print("INCOMPLETE CODE")
 
         elif choice == "U":
-            update_file(projects, test_file)
             print("INCOMPLETE CODE")
 
         else:
@@ -68,35 +69,51 @@ def main():
         print(menu)
         choice = input(">>> ").strip().upper()
 
-        "<do final thing, if needed>"
+    save_choice = str(input("Would you like to save projects? Y/N ")).upper()
+    while save_choice != "N":
+        if save_choice == "Y":
+            save_file(projects)
+            break
+        print("Invalid input. Y/N")
+        save_choice = str(input("Would you like to save projects? Y/N ")).upper()
+
+    print("Thank you for using custom-built project management software.")
+
+
+def get_filename():
+    filename = input("Name of text file to load: ").strip()
+    if not filename.lower().endswith(".txt"):
+        filename += ".txt"
+    return filename
 
 
 def load_file(filename) -> list[Project]:
     """
-    Load guitar data from a CSV file into a list of Guitar objects.
-    Name	Start Date	Priority	Cost Estimate	Completion Percentage
-    Build Car Park	12/09/2021	2	600000.0	95
+    Load projects from a text file. Return empty list if file doesn't exist.
     """
     projects = []
-    # Open the file for reading
-    in_file = open(filename, 'r')
+    try:
+        with open(filename, "r") as in_file:
+            next(in_file)
+            for line in in_file:
+                # Name	Start Date	Priority	Cost Estimate	Completion Percentage
+                parts = line.strip().split('\t')
+                project = Project(parts[0], parse_date(parts[1]), int(parts[2]),
+                                  float(parts[3]), float(parts[4]))
+                print(parts)
 
-    next(in_file)
+                projects.append(project)
+    except FileNotFoundError:
+        print(f"File '{filename}' not found. Starting with empty project list.")
 
-    for line in in_file:
-        # e.g. Martin Grand J12-16GTE,2015,2199
-        parts = line.strip().split('\t')
-        project = Project(parts[0], parse_date(parts[1]), int(parts[2]),
-                          float(parts[3]), float(parts[4]))
-        print(parts)
-
-        projects.append(project)
-    in_file.close()
     return projects
 
 
-def update_file(projects: list[Project], filename: str):
+def save_file(projects: list[Project]):
     """Write/Overwrite the list of projects into the given text file."""
+    filename = str(input("Name of file to save projects to: "))
+    if not filename.lower().endswith(".txt"):
+        filename += ".txt"
     with open(filename, "w", newline='') as out_file:
         writer = csv.writer(out_file, delimiter='\t')
 
@@ -105,6 +122,7 @@ def update_file(projects: list[Project], filename: str):
         for project in projects:
             writer.writerow([project.name, project.start_date.strftime("%d/%m/%Y"),
                              project.priority, project.cost_estimate, project.completion_percentage])
+    print(f"{filename} saved.")
 
 
 def add_project(projects: list[Project]):
