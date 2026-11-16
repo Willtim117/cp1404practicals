@@ -3,8 +3,9 @@ Project Management
 Estimate: 3 hr
 Actual:
 """
-from prac_07.project import Project
+import csv
 from datetime import datetime
+from prac_07.project import Project
 
 """
 Name	Start Date	Priority	Cost Estimate	Completion Percentage
@@ -16,17 +17,21 @@ Read 7 Habits Book	13/12/2021	6	99.0	100
 """
 
 FILENAME = "projects.txt"
+test_file = "test_file.txt"
 
 
 def main():
     """Read file of programming language details, save as objects, display."""
 
-    projects = load_file(FILENAME)
+    # projects = load_file(FILENAME)
+    projects = load_file(test_file)
 
     add_project(projects)
 
     for project in projects:
         print(project)
+
+    update_file(projects, test_file)
 
 
 def load_file(filename) -> list[Project]:
@@ -39,7 +44,7 @@ def load_file(filename) -> list[Project]:
     # Open the file for reading
     in_file = open(filename, 'r')
 
-    in_file.readline()
+    next(in_file)
 
     for line in in_file:
         # e.g. Martin Grand J12-16GTE,2015,2199
@@ -53,12 +58,16 @@ def load_file(filename) -> list[Project]:
     return projects
 
 
-# def update_file(projects: list[Project], filename: str):
-#     """Overwrite Guitars list into the given CSV file"""
-#     with open(filename, "w", newline='') as out_file:
-#         writer = csv.writer(out_file)
-#         for project in projects:
-#             writer.writerow([project.name, project.year, project.cost])
+def update_file(projects: list[Project], filename: str):
+    """Write/Overwrite the list of projects into the given text file."""
+    with open(filename, "w", newline='') as out_file:
+        writer = csv.writer(out_file, delimiter='\t')
+
+        writer.writerow(["Name", "Start Date", "Priority", "Cost Estimate", "Completion Percentage"])
+
+        for project in projects:
+            writer.writerow([project.name, project.start_date.strftime("%d/%m/%Y"),
+                             project.priority, project.cost_estimate, project.completion_percentage])
 
 
 def add_project(projects: list[Project]):
