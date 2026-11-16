@@ -26,12 +26,14 @@ def main():
     # projects = load_file(FILENAME)
     projects = load_file(test_file)
 
-    add_project(projects)
+    display_projects(projects)
+
+    # add_project(projects)
 
     for project in projects:
         print(project)
 
-    update_file(projects, test_file)
+    # update_file(projects, test_file)
 
 
 def load_file(filename) -> list[Project]:
@@ -94,21 +96,35 @@ def add_project(projects: list[Project]):
         name = str(input("Name: "))
 
 
-# def print_list(projects: list[Project]):
-#     """Takes list of Guitar objects print formatted list."""
-#
-#     index_width = len(str(len(projects)))
-#     name_width = max(len(f"{project.name}") for project in projects)
-#     year_width = max(len(f"{project.year}") for project in projects)
-#     price_width = max(len(f"{project.cost:,.2f}") for project in projects)
-#
-#     """format_date = will_date.strftime("%d of %B (which is a %A)")"""
-#
-#     print("Guitar List:")
-#     for i, project in enumerate(projects):
-#         vintage_string = "(vintage)" if project.is_vintage() else ""
-#         print(f"Guitar {i + 1:>{index_width}}: {project.name:>{name_width}} ({project.year:>{year_width}}), "
-#               f"worth $ {project.cost:>{price_width},.2f} {vintage_string}")
+def display_projects(projects: list[Project]):
+    """Takes list of Guitar objects print formatted list."""
+
+    index_width = len(str(len(projects)))
+    name_width = max(len(f"{project.name}") for project in projects)
+    # year_width = max(len(f"{project.year}") for project in projects)
+    cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
+
+    incomplete_projects = []
+    complete_projects = []
+
+    """format_date = will_date.strftime("%d of %B (which is a %A)")"""
+    for i, project in enumerate(projects):
+        if project.completion_percentage == 100.0:
+            complete_projects.append(project)
+        else:
+            incomplete_projects.append(project)
+
+    print("Incomplete projects:")
+    for project in incomplete_projects:
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date}, "
+              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"Completion: {project.completion_percentage:>{4}}%")
+
+    print("Completed projects:")
+    for project in complete_projects:
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date}, "
+              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"Completion: {project.completion_percentage:>{4}}%")
 
 
 main()
