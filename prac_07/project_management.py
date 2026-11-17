@@ -152,8 +152,12 @@ def add_project(projects: list[Project]):
 def display_projects(projects: list[Project]):
     """Takes list of Guitar objects print formatted list."""
 
-    name_width = max(len(f"{project.name}") for project in projects)
-    cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
+    try:
+        name_width = max(len(f"{project.name}") for project in projects)
+        cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
+    except ValueError:
+        print("No Projects to display. Get your grind on.")
+        return
 
     incomplete_projects = []
     complete_projects = []
