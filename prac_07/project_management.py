@@ -34,6 +34,7 @@ def main():
     - (U)pdate project
     - (Q)uit
     """
+    print("Welcome to Pythonic Project Management\nPlease load a project.")
     print(menu)
 
     projects = []
@@ -51,9 +52,10 @@ def main():
 
         elif choice == "D":
             display_projects(projects)
-            print("INCOMPLETE CODE")
 
         elif choice == "F":
+            """Filter projects by date
+                (Ask the user for a date and display only projects that start after that date, sorted by date)"""
             print("INCOMPLETE CODE")
 
         elif choice == "A":
@@ -61,6 +63,10 @@ def main():
             print("INCOMPLETE CODE")
 
         elif choice == "U":
+            """Update project
+            (Choose a project, then modify the completion % and/or priority - 
+            the user can leave either input blank to retain existing values) """
+            update_project(projects)
             print("INCOMPLETE CODE")
 
         else:
@@ -152,11 +158,8 @@ def add_project(projects: list[Project]):
 def display_projects(projects: list[Project]):
     """Takes list of Guitar objects print formatted list."""
 
-    try:
-        name_width = max(len(f"{project.name}") for project in projects)
-        cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
-    except ValueError:
-        print("No Projects to display. Get your grind on.")
+    name_width, cost_width = find_widths(projects)
+    if name_width == 0:
         return
 
     incomplete_projects = []
@@ -190,6 +193,48 @@ def parse_date(date_string: str):
         except ValueError:
             continue
     raise ValueError(f"Invalid date: {date_string}")
+
+
+def update_project(projects: list[Project]):
+    """Update project
+    (Choose a project, then modify the completion % and/or priority -
+    the user can leave either input blank to retain existing values) """
+
+    name_width, cost_width = find_widths(projects)
+    if name_width == 0:
+        return
+
+    """format_date = will_date.strftime("%d of %B (which is a %A)")"""
+    print("Projects:")
+    for i, project in enumerate(projects):
+        print(f"\t{i:3}. {project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
+              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"Completion: {project.completion_percentage:>{5}}%")
+
+    project_index = int(input("Project choice: "))
+    print(f"\t{project_index:3}. {projects[project_index].name:<{name_width}}: "
+          f"start: {projects[project_index].start_date.strftime("%d/%m/%Y")}, "
+          f"priority:{projects[project_index].priority:>{2}}, "
+          f"Estimate: ${projects[project_index].cost_estimate:>{cost_width}}, "
+          f"Completion: {projects[project_index].completion_percentage:>{5}}%")
+
+    new_percentage = input("New Percentage: ").strip()
+    if new_percentage:
+        projects[project_index].completion_percentage = float(new_percentage)
+
+    new_priority = input("New Priority: ").strip()
+    if new_priority:
+        projects[project_index].priority = int(new_priority)
+
+
+def find_widths(projects: list[Project]):
+    try:
+        name_width = max(len(f"{project.name}") for project in projects)
+        cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
+        return name_width, cost_width
+    except ValueError:
+        print("No Projects to display. Get your grind on.")
+        return 0, 0
 
 
 main()
