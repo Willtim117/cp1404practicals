@@ -164,6 +164,8 @@ def filter_by_date(projects: list[Project]):
         print(f"No projects found after {start_date}.")
         return
 
+    valid_projects.sort(key=get_start_date)
+
     name_width, cost_width = find_widths(projects)
     print("Projects:")
     for project in valid_projects:
@@ -203,6 +205,10 @@ def parse_date(date_string: str):
         except ValueError:
             continue
     raise ValueError(f"Invalid date: {date_string}")
+
+
+def get_start_date(project: Project):
+    return project.start_date
 
 
 def update_project(projects: list[Project]):
@@ -247,6 +253,8 @@ def find_widths(projects: list[Project]):
     except ValueError:
         print("No Projects to display. Get your grind on.")
         return 0, 0
+
+
 
 
 main()
