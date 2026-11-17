@@ -7,15 +7,6 @@ import csv
 from datetime import datetime
 from prac_07.project import Project
 
-"""
-Name	Start Date	Priority	Cost Estimate	Completion Percentage
-Build Car Park	12/09/2021	2	600000.0	95
-Mow Lawn	31/10/2022	3	3.0	0
-Organise Pantry	20/07/2022	1	25.0	55
-Record Music Video	01/12/2022	9	250000.0	0
-Read 7 Habits Book	13/12/2021	6	99.0	100
-"""
-
 # FILENAME = "projects.txt"
 test_file = "test_file.txt"
 
@@ -40,33 +31,33 @@ def main():
     projects = []
     choice = input(">>> ").strip().upper()
     while choice != "Q":
+
         if choice == "L":
-            # projects = load_file(FILENAME)
+            """Load Projects"""
             FILENAME = get_filename()
             projects = load_file(FILENAME)
-            print("INCOMPLETE CODE")
 
         elif choice == "S":
+            """Save Projects"""
             save_file(projects)
             print("INCOMPLETE CODE")
 
         elif choice == "D":
+            """Display Projects"""
             display_projects(projects)
 
         elif choice == "F":
-            """Filter projects by date
-                (Ask the user for a date and display only projects that start after that date, sorted by date)"""
+            """Filter projects by date"""
             filter_by_date(projects)
             print("INCOMPLETE CODE")
 
         elif choice == "A":
+            """Add new project"""
             add_project(projects)
             print("INCOMPLETE CODE")
 
         elif choice == "U":
-            """Update project
-            (Choose a project, then modify the completion % and/or priority - 
-            the user can leave either input blank to retain existing values) """
+            """Update project"""
             update_project(projects)
             print("INCOMPLETE CODE")
 
@@ -88,6 +79,7 @@ def main():
 
 
 def get_filename():
+    """Gets name from user creates name.txt"""
     filename = input("Name of text file to load: ").strip()
     if not filename.lower().endswith(".txt"):
         filename += ".txt"
@@ -95,9 +87,7 @@ def get_filename():
 
 
 def load_file(filename) -> list[Project]:
-    """
-    Load projects from a text file. Return empty list if file doesn't exist.
-    """
+    """Load projects from a text file. Return empty list if file doesn't exist."""
     projects = []
     try:
         with open(filename, "r") as in_file:
@@ -132,50 +122,8 @@ def save_file(projects: list[Project]):
     print(f"{filename} saved.")
 
 
-def filter_by_date(projects: list[Project]):
-    date_string = input("Show projects that start after date (dd/mm/yy): ")
-    start_date = parse_date(date_string)
-
-    valid_projects = [project for project in projects if project.start_date > start_date]
-
-    if not valid_projects:
-        print(f"No projects found after {start_date}.")
-        return
-
-    name_width, cost_width = find_widths(projects)
-    print("Projects:")
-    for project in valid_projects:
-        print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
-              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
-              f"Completion: {project.completion_percentage:>{4}}%")
-
-
-def add_project(projects: list[Project]):
-    """
-    Name	Start Date	Priority	Cost Estimate	Completion Percentage
-    Build Car Park	12/09/2021	2	600000.0	95
-    """
-    print("Let's add a new project")
-
-    name = str(input("Name: "))
-    while name != "":
-        date_string = input("Start date (dd/mm/yy): ")
-        start_date = parse_date(date_string)
-
-        priority = int(input("Priority: "))
-        cost_estimate = float(input("Cost estimate: "))
-        percentage = float(input("Percentage complete: "))
-
-        projects.append(Project(name, start_date, priority, cost_estimate, percentage))
-
-        print(f"{name} added. {start_date}. Priority: {priority}. Estimate: ${cost_estimate}. "
-              f"Percentage Complete: {percentage}% ")
-
-        name = str(input("Name: "))
-
-
 def display_projects(projects: list[Project]):
-    """Takes list of Guitar objects print formatted list."""
+    """Takes list of Project objects prints formatted list."""
 
     name_width, cost_width = find_widths(projects)
     if name_width == 0:
@@ -204,6 +152,48 @@ def display_projects(projects: list[Project]):
               f"Completion: {project.completion_percentage:>{4}}%")
 
 
+def filter_by_date(projects: list[Project]):
+    """Gets date then displays formatted list of projects started after date."""
+    date_string = input("Show projects that start after date (dd/mm/yy): ")
+    start_date = parse_date(date_string)
+
+    valid_projects = [project for project in projects if project.start_date > start_date]
+
+    if not valid_projects:
+        print(f"No projects found after {start_date}.")
+        return
+
+    name_width, cost_width = find_widths(projects)
+    print("Projects:")
+    for project in valid_projects:
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
+              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"Completion: {project.completion_percentage:>{4}}%")
+
+
+def add_project(projects: list[Project]):
+    """ Gets user input: Name, Start Date, Priority, Cost Estimate, Completion Percentage.
+    Creates new Project object. Appends Object to project list.
+    """
+    print("Let's add a new project")
+
+    name = str(input("Name: "))
+    while name != "":
+        date_string = input("Start date (dd/mm/yy): ")
+        start_date = parse_date(date_string)
+
+        priority = int(input("Priority: "))
+        cost_estimate = float(input("Cost estimate: "))
+        percentage = float(input("Percentage complete: "))
+
+        projects.append(Project(name, start_date, priority, cost_estimate, percentage))
+
+        print(f"{name} added. {start_date}. Priority: {priority}. Estimate: ${cost_estimate}. "
+              f"Percentage Complete: {percentage}% ")
+
+        name = str(input("Name: "))
+
+
 def parse_date(date_string: str):
     """Parse a date in either dd/mm/yyyy or dd/mm/yy format."""
     for fmt in ("%d/%m/%Y", "%d/%m/%y"):
@@ -215,15 +205,12 @@ def parse_date(date_string: str):
 
 
 def update_project(projects: list[Project]):
-    """Update project
-    (Choose a project, then modify the completion % and/or priority -
-    the user can leave either input blank to retain existing values) """
+    """Gets user project selection. Allows user to update percentage and priority of selected Project object."""
 
     name_width, cost_width = find_widths(projects)
     if name_width == 0:
         return
 
-    """format_date = will_date.strftime("%d of %B (which is a %A)")"""
     print("Projects:")
     for i, project in enumerate(projects):
         print(f"\t{i:3}. {project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
@@ -247,6 +234,7 @@ def update_project(projects: list[Project]):
 
 
 def find_widths(projects: list[Project]):
+    """Finds maximums widths of Project name and Project Cost. To help with display formats."""
     try:
         name_width = max(len(f"{project.name}") for project in projects)
         cost_width = max(len(f"{project.cost_estimate:,.2f}") for project in projects)
