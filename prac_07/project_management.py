@@ -56,6 +56,7 @@ def main():
         elif choice == "F":
             """Filter projects by date
                 (Ask the user for a date and display only projects that start after that date, sorted by date)"""
+            filter_by_date(projects)
             print("INCOMPLETE CODE")
 
         elif choice == "A":
@@ -129,6 +130,24 @@ def save_file(projects: list[Project]):
             writer.writerow([project.name, project.start_date.strftime("%d/%m/%Y"),
                              project.priority, project.cost_estimate, project.completion_percentage])
     print(f"{filename} saved.")
+
+
+def filter_by_date(projects: list[Project]):
+    date_string = input("Show projects that start after date (dd/mm/yy): ")
+    start_date = parse_date(date_string)
+
+    valid_projects = [project for project in projects if project.start_date > start_date]
+
+    if not valid_projects:
+        print(f"No projects found after {start_date}.")
+        return
+
+    name_width, cost_width = find_widths(projects)
+    print("Projects:")
+    for project in valid_projects:
+        print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
+              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"Completion: {project.completion_percentage:>{4}}%")
 
 
 def add_project(projects: list[Project]):
