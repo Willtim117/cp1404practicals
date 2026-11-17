@@ -3,13 +3,12 @@ Project
 Estimate: 3 hr
 Actual:
 """
-import datetime
 
 
 class Project:
     """Represent a Project."""
 
-    def __init__(self, name="", start_date=None, priority="", cost_estimate="", completion_percentage=""):
+    def __init__(self, name="", start_date=None, priority="", cost_estimate="", completion_percentage=0.0):
         """Initialize a Project instance.
         """
         self.name = name
@@ -26,16 +25,8 @@ class Project:
     def __repr__(self) -> str:
         return str(self)
 
-    # def get_age(self):
-    #     age = datetime.datetime.now().year - self.year
-    #     return age
-    #
-    # def is_vintage(self):
-    #     return self.get_age() >= 50
-    #
-    # def __lt__(self, other):
-    #     """Determine if two People are the same."""
-    #     if not isinstance(other, Guitar):
-    #         return NotImplemented
-    #     return self.year < other.year
+    def __lt__(self, other):
+        return self.priority < other.priority
 
+    def is_complete(self):
+        return self.completion_percentage >= 100

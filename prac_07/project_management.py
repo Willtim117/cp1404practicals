@@ -40,7 +40,6 @@ def main():
         elif choice == "S":
             """Save Projects"""
             save_file(projects)
-            print("INCOMPLETE CODE")
 
         elif choice == "D":
             """Display Projects"""
@@ -49,17 +48,14 @@ def main():
         elif choice == "F":
             """Filter projects by date"""
             filter_by_date(projects)
-            print("INCOMPLETE CODE")
 
         elif choice == "A":
             """Add new project"""
             add_project(projects)
-            print("INCOMPLETE CODE")
 
         elif choice == "U":
             """Update project"""
             update_project(projects)
-            print("INCOMPLETE CODE")
 
         else:
             print("INVALID INPUT")
@@ -97,9 +93,11 @@ def load_file(filename) -> list[Project]:
                 parts = line.strip().split('\t')
                 project = Project(parts[0], parse_date(parts[1]), int(parts[2]),
                                   float(parts[3]), float(parts[4]))
-                print(parts)
 
                 projects.append(project)
+
+        print(f"Loaded {len(projects)} projects from {filename}")
+
     except FileNotFoundError:
         print(f"File '{filename}' not found. Starting with empty project list.")
 
@@ -134,21 +132,24 @@ def display_projects(projects: list[Project]):
 
     """format_date = will_date.strftime("%d of %B (which is a %A)")"""
     for i, project in enumerate(projects):
-        if project.completion_percentage == 100.0:
+        if project.is_complete():
             complete_projects.append(project)
         else:
             incomplete_projects.append(project)
 
+    incomplete_projects.sort()
+    complete_projects.sort()
+
     print("Incomplete projects:")
     for project in incomplete_projects:
         print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
-              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"priority:{project.priority:>{2}}, Estimate: $ {project.cost_estimate:>{cost_width},.2f}, "
               f"Completion: {project.completion_percentage:>{4}}%")
 
     print("Completed projects:")
     for project in complete_projects:
         print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
-              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"priority:{project.priority:>{2}}, Estimate: $ {project.cost_estimate:>{cost_width},.2f}, "
               f"Completion: {project.completion_percentage:>{4}}%")
 
 
@@ -167,8 +168,8 @@ def filter_by_date(projects: list[Project]):
     print("Projects:")
     for project in valid_projects:
         print(f"\t{project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
-              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
-              f"Completion: {project.completion_percentage:>{4}}%")
+              f"priority:{project.priority:>{2}}, Estimate: $ {project.cost_estimate:>{cost_width},.2f}, "
+              f"Completion: {project.completion_percentage:>{5}}%")
 
 
 def add_project(projects: list[Project]):
@@ -188,7 +189,7 @@ def add_project(projects: list[Project]):
 
         projects.append(Project(name, start_date, priority, cost_estimate, percentage))
 
-        print(f"{name} added. {start_date}. Priority: {priority}. Estimate: ${cost_estimate}. "
+        print(f"{name} added. {start_date}. Priority: {priority}. Estimate: $ {cost_estimate:,.2f}. "
               f"Percentage Complete: {percentage}% ")
 
         name = str(input("Name: "))
@@ -211,17 +212,19 @@ def update_project(projects: list[Project]):
     if name_width == 0:
         return
 
+    projects.sort()
+
     print("Projects:")
     for i, project in enumerate(projects):
         print(f"\t{i:3}. {project.name:<{name_width}}: start: {project.start_date.strftime("%d/%m/%Y")}, "
-              f"priority:{project.priority:>{2}}, Estimate: ${project.cost_estimate:>{cost_width}}, "
+              f"priority:{project.priority:>{2}}, Estimate: $ {project.cost_estimate:>{cost_width},.2f}, "
               f"Completion: {project.completion_percentage:>{5}}%")
 
     project_index = int(input("Project choice: "))
     print(f"\t{project_index:3}. {projects[project_index].name:<{name_width}}: "
           f"start: {projects[project_index].start_date.strftime("%d/%m/%Y")}, "
           f"priority:{projects[project_index].priority:>{2}}, "
-          f"Estimate: ${projects[project_index].cost_estimate:>{cost_width}}, "
+          f"Estimate: $ {projects[project_index].cost_estimate:>{cost_width},.2f}, "
           f"Completion: {projects[project_index].completion_percentage:>{5}}%")
 
     new_percentage = input("New Percentage: ").strip()
@@ -231,6 +234,8 @@ def update_project(projects: list[Project]):
     new_priority = input("New Priority: ").strip()
     if new_priority:
         projects[project_index].priority = int(new_priority)
+
+    print(f"{projects[project_index].name} has been updated.")
 
 
 def find_widths(projects: list[Project]):
