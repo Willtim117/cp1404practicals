@@ -6,7 +6,6 @@ Started 13/10/2015
 
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.core.window import Window
 
 
 class ConvertMilesKM(App):
@@ -22,9 +21,10 @@ class ConvertMilesKM(App):
         """Handle calculation (could be button press or other call), output result to label."""
         try:
             result = float(value) * 1.60934
-            self.root.ids.output_label.text = f"{result:.4f}"
+            self.root.ids.output_label.text = f"{result:.4f} km"
         except ValueError:
-            pass
+            self.root.ids.output_label.text = f"{0:.4f} km"
+            # pass
 
     def handle_increment(self, value, other):
         """Increase or  decrease the input number by 1"""
@@ -32,12 +32,12 @@ class ConvertMilesKM(App):
             result = float(value) + other
             self.root.ids.input_number.text = str(result)
         except ValueError:
-            pass
+            result = 0 + other
+            self.root.ids.input_number.text = str(result)
 
     def handle_clear(self):
         print("test")
-        # self.root.ids.input_name.text = ""
-        # self.root.ids.output_label.text = ""
+        self.root.ids = ""
 
 
 ConvertMilesKM().run()
